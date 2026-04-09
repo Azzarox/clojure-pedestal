@@ -1,7 +1,15 @@
 (ns hello
-  (:require [io.pedestal.connector :as conn]
+  (:require [clojure.data.json :as json]
+            [io.pedestal.connector :as conn]
             [io.pedestal.http.http-kit :as hk]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [io.pedestal.http.content-negotiation :as content-negotiation]))
+
+(def supported-types
+  ["text/html" "application/edn" "application/json" "text/plain"])
+
+(def content-negotiation-interceptor
+  (content-negotiation/negotiate-content supported-types))
 
 (def unmentionables
   #{"John" "George" "Michael"})
@@ -13,7 +21,8 @@
 
 (defn ok
   [message]
-  {:status 200 :body message})
+  {:status 200
+   :body message})
 
 (defn greeting-for
   [greet-name]
@@ -38,9 +47,36 @@
       (ok message)
       (not-found))))
 
+(def echo
+  {:name :echo
+   :enter (fn [context]
+            (let [request (:request context)
+                  response (ok request)]
+              (assoc context :response response)))})
+
+(def coerce-body-interceptor
+  {:name :coerce-body
+   :leave
+   (fn [context]
+     (let [accepted (get-in context [:request :accept :field] "text/plain")
+           response (get context :response)
+           body (get response :body)
+           coerced-body (case accepted
+                          "text/html" body
+                          "text/plain" body
+                          "application/edn" (pr-str body)
+                          "application/json" (json/write-str body))
+           updated-response (assoc response
+                               :headers {"Content-Type" accepted}
+                               :body coerced-body)]
+       (assoc context :response updated-response)))})
+
 ;; Using #' it evaluates the Var and not the function behind it ... this way i dont need to evaluate depending functions and stuff when i change something
 (def routes
-  #{["/greet" :get #'greet-handler :route-name :greet]})
+  #{["/greet" :get [coerce-body-interceptor
+                    content-negotiation-interceptor
+                    #'greet-handler] :route-name :greet]
+    ["/echo" :get echo :route-name :echo]})
 
 (def port 8890)
 
