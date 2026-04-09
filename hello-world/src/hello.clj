@@ -69,13 +69,17 @@
   {:name :echo
    :enter #(assoc % :response (ok (:request %)))})
 
+(defn missing-response-content-type?
+  [context]
+  (nil? (get-in context [:response :headers "Content-Type"])))
+
 (def coerce-body-interceptor
   {:name ::coerce-body
    :leave
    (fn [context]
-     (if (get-in context [:response :headers "Content-Type"])
-       context
-       (update-in context [:response] coerce-to (accepted-type context))))})
+     (cond-> context
+       (missing-response-content-type? context)
+       (update :response coerce-to (accepted-type context))))})
 
 
 ;; Using #' it evaluates the Var and not the function behind it ... this way i dont need to evaluate depending functions and stuff when i change something
