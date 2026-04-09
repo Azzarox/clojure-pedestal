@@ -49,10 +49,7 @@
 
 (def echo
   {:name :echo
-   :enter (fn [context]
-            (let [request (:request context)
-                  response (ok request)]
-              (assoc context :response response)))})
+   :enter #(assoc % :response (ok (:request %)))})
 
 (def coerce-body-interceptor
   {:name :coerce-body
