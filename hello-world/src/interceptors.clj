@@ -1,6 +1,7 @@
 (ns interceptors
   (:require [utils.response :refer :all]
-            [utils :refer :all]))
+            [utils :refer :all]
+            [io.pedestal.http.content-negotiation :as content-negotiation]))
 
 (def content-negotiation-interceptor
   (content-negotiation/negotiate-content supported-types))

@@ -2,7 +2,7 @@
   (:require
    [io.pedestal.connector :as conn]
    [io.pedestal.http.http-kit :as hk]
-   [routes :refer :all]))
+   [routes :refer [routes]]))
 
 (def port 8890)
 
