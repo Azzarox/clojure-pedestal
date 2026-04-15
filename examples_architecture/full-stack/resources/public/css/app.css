@@ -1,0 +1,9 @@
+body {
+  font-family: sans-serif;
+  margin: 2rem;
+}
+
+#app {
+  max-width: 800px;
+  margin: 0 auto;
+}
