@@ -1,0 +1,11 @@
+{:source-paths ["src/frontend"]   ; shadow-cljs only sees frontend ClojureScript code
+
+ :dependencies [[reagent         "1.2.0"]
+                [re-frame        "1.4.3"]
+                [day8.re-frame/http-fx "0.2.4"]   ; for HTTP calls from re-frame
+                [cljs-ajax       "0.8.4"]]         ; underlying HTTP library
+
+ :builds {:app {:target    :browser
+                :output-dir "resources/public/js"  ; Pedestal serves this
+                :asset-path "/js"
+                :modules   {:app {:init-fn frontend.core/init}}}}}
