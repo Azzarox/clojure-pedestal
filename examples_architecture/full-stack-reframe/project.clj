@@ -6,7 +6,7 @@
                  [org.clojure/data.json         "2.5.0"]
                  [ch.qos.logback/logback-classic "1.4.14"]]
   :main backend.core
-  :source-paths   ["src/backend"]   ; lein only sees backend Clojure code
+  :source-paths   ["backend/src"]   ; lein only sees backend Clojure code
   :resource-paths ["resources"]
   :profiles {:dev {:source-paths ["dev"]
                    :jvm-opts     ["-Dio.pedestal.dev-mode=true"]}})

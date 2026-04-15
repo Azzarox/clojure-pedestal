@@ -1,4 +1,4 @@
-{:source-paths ["src/frontend"]   ; shadow-cljs only sees frontend ClojureScript code
+{:source-paths ["frontend/src"]   ; shadow-cljs only sees frontend ClojureScript code
 
  :dependencies [[reagent         "1.2.0"]
                 [re-frame        "1.4.3"]

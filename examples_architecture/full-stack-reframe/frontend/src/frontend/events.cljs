@@ -1,9 +1,7 @@
 (ns frontend.events
   (:require [re-frame.core :as rf]
-            [ajax.core :as ajax]))
-
-;; Loads the http-fx effect handler — enables :http-xhrio in events
-(rf/reg-fx :http-xhrio (.-http-xhrio (js/require "day8.re-frame/http-fx")))
+            [ajax.core :as ajax]
+            [day8.re-frame.http-fx]))
 
 ;; ── App init ──────────────────────────────────────────────────────────────────
 

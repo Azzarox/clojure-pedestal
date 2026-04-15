@@ -3,3 +3,6 @@ target/
 .shadow-cljs
 .lsp
 .calva
+.claude
+node_modules
+resources/public/js/

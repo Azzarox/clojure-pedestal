@@ -8,4 +8,4 @@
   (table/table-routes
     [["/api/feedback" :get  [feedback/list-all]                         :route-name ::feedback-list]
      ["/api/feedback" :post [(body-params/body-params) feedback/create] :route-name ::feedback-create]
-     ["/*"            :get  [spa/index]                                 :route-name ::spa]]))
+     ["/"            :get  [spa/index]                                 :route-name ::spa]]))
