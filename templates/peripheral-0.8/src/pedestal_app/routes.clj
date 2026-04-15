@@ -1,0 +1,19 @@
+(ns pedestal-app.routes
+  (:require [io.pedestal.http.route.definition.table :as table]))
+
+(defn hello-handler
+  [_request]
+  {:status 200
+   :body "Hello"})
+
+(defn greet-handler
+  [request]
+  (let [{:keys [name]} (:json-params request)]
+    {:status 200
+     :body (str "Hello, " name ".")}))
+
+(defn routes
+  []
+  (table/table-routes
+   [["/hello" :get [hello-handler] :route-name ::hello]
+    ["/hello" :post [greet-handler] :route-name ::greet]]))
